@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+ 
+<div class="block1">
+<h1>Hello</h1>
+  <h2>Here is a DevOps quote for you: </h2>
+  <p>
+{{quote}}
+  </p>
+  <h3>Key: {{keyed}}</h3>
+  <h3>KeySet: {{set_it}}</h3>
+  <h3>Hits: {{ghit}}</h3>
+  <h3>Misses: {{gmiss}}</h3>
+  <h2>Percentage Hit Ratio: {{percentage_miss}} %</h2>
+</div>
+{% endblock %}
