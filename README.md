@@ -6,11 +6,27 @@ Vagrant
 
 * Ubuntu Xenial 16.04
 
+----
+## Pre-Requisites
+
+* Vagrant
+* VirtualBox
+* ChefDK
+
+----
 ## Usage
 1. Runs an application over 8080 and redirects to HTTPS.
 2. Runs a python based application over 80
    * / -> displays a test page
    * /stats -> displays memcache stats
+
+*NOTE: To test this application, make sure you have pre-requisites Installed.*
+```
+# clone this github repository
+git clone <git_url>
+cd python-practices
+vagrant up
+```
 ----
 ## Host port mapping
 1. *Test Application with HTTPS redirect*
