@@ -34,10 +34,18 @@ def get_statics():
     data = get_data[1]
     ghits = '{}'.format(data['get_hits'])
     gmisses = '{}'.format(data['get_misses'])
+    gcmd = '{}'.format(data['cmd_get'])
+    kbytes_read = int('{}'.format(data['bytes_read']))
+    kbytes_write = int('{}'.format(data['bytes_written']))
+    mbytes_read = round(kbytes_read / (1024 * 1024),3)
+    mbytes_written = round(kbytes_write / (1024 * 1024),3)
+    gcmdget = int(gcmd)
     gmiss = int(gmisses)
     ghit = int(ghits)
     total_gets = ghit + gmiss
-    percentage_miss = round(gmiss / total_gets * 100, 2)
+    percentage_hit = round(ghit / gcmdget * 100, 2)
+    percentage_miss = round(100 - percentage_hit, 2)
+    total_mem_used = (mbytes_read + mbytes_written)
     
     return render_template(
         'test.html',**locals())
