@@ -24,20 +24,21 @@ Vagrant
 
 ----
 ## Samples
->$ curl -I http://localhost:9090
+```
+$ curl -I http://localhost:9090
 HTTP/1.1 301 Moved Permanently
 Date: Wed, 27 Sep 2017 13:40:57 GMT
 Server: Apache/2.4.18 (Ubuntu)
 Location: https://localhost:8443
 Content-Type: text/html; charset=iso-8859-1
 
->$ curl -Ik https://localhost:8443
+$ curl -Ik https://localhost:8443
 HTTP/1.1 200 OK
 Date: Wed, 27 Sep 2017 13:41:13 GMT
 Server: Apache/2.4.18 (Ubuntu)
 Content-Type: text/html;charset=UTF-8
 
->$ curl -i http://localhost:9080
+$ curl -i http://localhost:9080
 HTTP/1.1 200 OK
 Date: Wed, 27 Sep 2017 13:41:47 GMT
 Server: Apache/2.4.18 (Ubuntu)
@@ -46,7 +47,7 @@ Vary: Accept-Encoding
 Content-Type: text/html; charset=utf-8
 Index!
 
->$ curl -i http://localhost:9080/stats
+$ curl -i http://localhost:9080/stats
 HTTP/1.1 200 OK
 Date: Wed, 27 Sep 2017 13:41:57 GMT
 Server: Apache/2.4.18 (Ubuntu)
@@ -84,7 +85,12 @@ DevOps is not about Automation
 </div>
 </body>
 </html>
+```
 
 ----
-## thanks
+## Screenshot of python app
+![screenshot](https://github.com/come2abhi/python-practices/blob/master/working_python_app.png "Python App with memcache")
+
+----
+## Thanks
 
