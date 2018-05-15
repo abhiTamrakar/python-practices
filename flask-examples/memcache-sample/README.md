@@ -105,7 +105,7 @@ DevOps is not about Automation
 
 ----
 ## Screenshot of python app
-![screenshot](https://github.com/come2abhi/python-practices/blob/master/working_python_app.png "Python App with memcache")
+![screenshot](https://github.com/abhiTamrakar/python-practices/blob/master/flask-examples/memcache-sample/working_python_app.png "Python App with memcache")
 
 ----
 ## Thanks
