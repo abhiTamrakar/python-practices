@@ -2,12 +2,15 @@
 Implement pessimistic lock using mongoengine.
 
 """
-import os
-from datetime import datetime, timedelta
-from mongoengine import *
+from datetime import datetime
+from mongoengine import connect
+from mongoengine.queryset.visitor import Q
 import contextlib
 
-class LockTimeout(Exception):
+class MongoLockTimeout(Exception):
+   pass
+
+class MongoCollectionLocked(Exception):
    pass
 
 class Locks(Document):
@@ -29,20 +32,25 @@ class Locks(Document):
     }
 
 class mongoEngineLock(object):
-    def __init__(self, client=None, dbname='mongoenginelocks', poll=0.1):
+    def __init__(self, client=None, dbname=None, poll=0.1):
         if client:
            self.client = client
         else:
-           self.client = 'db='+ dbname + ', username=' + '' + 'password=' + '' + 'host=localhost'
+           if dbname:
+              self.dbname = dbname
+           else:
+              self.dbname = 'mongolocks' 
+
+           self.client = 'db='+ self.dbname + ', username=' + '' + 'password=' + '' + 'host=localhost'
         
         self.poll = poll
-        connect(client)
+        connect(self.client)
 
     @contextlib.contextmanager
     def __call__(self, owner, retries=5):
         if not self.lock(owner, retries):
            status = self._get_lockinfo(owner)
-           raise LockTimeout(
+           raise MongoLockTimeout(
               u'timedout, lock owned by {owner}, since {ts}. Please try after sometime.'.format(
                  owner=status['owner'], ts=status['ts']
               )
@@ -53,27 +61,31 @@ class mongoEngineLock(object):
            self.release(owner) 
 
     def lock(self, owner, retries):
-        _retry_step = 0
+        _retry_step = 1
         _now = datetime.utcnow()
         while True:
-           if not locked_by(owner):
-              data = Locks(
-                 'ts': now,
-                 'owner': owner,
-                 'locked': True
-              )
-              data.save()
+           try:
+              if not self.isLocked():
+                 data = Locks(
+                    'ts': _now,
+                    'owner': self.owner,
+                    'locked': True
+                 )
+                 data.save()
 
-              return True
+                 return True
+              else:
+                 raise MongoCollectionLocked('Error: DB has a write lock by another user, retrying self..')
 
-           if _retry_step == self.retries:
-              return False
+           except MongoCollectionLocked:
+              if _retry_step == self.retries:
+                 return False
 
-           _retry_step+=1
-           time.sleep(self.poll)
+              _retry_step+=1
+              time.sleep(self.poll)
 
-    def locked_by(owner):
-        status = Locks.objects(owner__exact=owner).count()
+    def isLocked():
+        status = Locks.objects(locked__exact=True).count()
 
         return True if status == 1 else False
 
